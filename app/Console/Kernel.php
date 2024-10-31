@@ -5,7 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,13 +16,13 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
             try {
-                $controlador->store();
+                //$controlador->store();
                 \Log::info('Tarea programada ejecutada correctamente.');
             } catch (\Exception $e) {
                 \Log::error('Error al ejecutar la tarea programada: ' . $e->getMessage());
             }
-        // })->everyMinute(); 
-        })->dailyAt('17:01'); 
+        //})->everyMinute(); 
+        })->dailyAt('16:10'); 
         
     }
 
