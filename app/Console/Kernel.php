@@ -17,7 +17,6 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
             try {
-
                 $controlador = new EmailController();
                 $controlador->sendEmail();
                 \Log::info('Tarea programada ejecutada correctamente.');
