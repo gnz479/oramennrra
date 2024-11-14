@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get('/send-email', 'Email\EmailController@sendEmail')->name('email.send');
+Route::get('/get-tasks-to-notifications', 'Email\EmailController@getTasksToNotificacion');
