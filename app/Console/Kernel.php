@@ -18,8 +18,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             try {
                 $controlador = new EmailController();
-                    $controlador->getTasksToNotificacion();
-                    \Log::info('Tarea programada ejecutada correctamente. -');
+                $controlador->getTasksToNotificacion();
+                \Log::info('Tarea programada ejecutada correctamente. -');
             } catch (\Exception $e) {
                 \Log::error('Error al ejecutar la tarea programada: ' . $e->getMessage());
             }

@@ -19,3 +19,7 @@ Route::get('/', function () {
 
 Route::get('/send-email', 'Email\EmailController@sendEmail')->name('email.send');
 Route::get('/get-tasks-to-notifications', 'Email\EmailController@getTasksToNotificacion');
+Route::get('/set-tasks-complete/{id}', 'Email\EmailController@taskCompleted')->name('taskComplete');
+
+//carga de archivos
+Route::get('/drag-and-drop-files', 'UploadFiles\UploadFileController@dragAndDrop');
