@@ -23,3 +23,6 @@ Route::get('/set-tasks-complete/{id}', 'Email\EmailController@taskCompleted')->n
 
 //carga de archivos
 Route::get('/drag-and-drop-files', 'UploadFiles\UploadFileController@dragAndDrop');
+
+//
+Route::get('/task-test', 'Email\EmailController@taskAdded');

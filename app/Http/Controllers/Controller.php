@@ -11,56 +11,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function storeTest(){
-        $user = new User();
-        $user->name = 'prueba';
-        $user->email = 'prueba@tci.com';
-        $user->password = bcrypt('test1234'); // Encripta la contraseña
-        $user->save();
-
-        \Log::info('Usuario guardado correctamente');
-    }
-
-    //funcion para obtener todas las tareas que no esten finalizadas
-    function getQuickBase(){
-        $db = 'budxyyjmm';
-        $query = '{12.EX.false} AND {8.XCT.""}';
-        $clist = '3.8.16.20.19.21';
-
-        $url = "https://aortizdemontellanoarevalo.quickbase.com/db/".$db; //url a donde se consulta
-        $userToken = "b8degy_fwjc_0_dkr9dvzbeqfv43cj89itthgskgd";
-
-        $bodyQuery = "<qdbapi> 
-            <usertoken>".$userToken."</usertoken>
-            <query>".$query."</query>
-            <clist>".$clist."</clist>
-        </qdbapi>"; //consulta para obtener los productos
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$bodyQuery);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/xml',
-            'Content-Length:',
-            'QUICKBASE-ACTION: API_DoQuery'
-        ));
-        
-        $response = curl_exec($ch);
-        curl_close ($ch);
-        $record = simplexml_load_string($response);
-        $values = array();
-        foreach($record->record as $value){
-            $values[] = $value;
-        }
-        return  $values;
-    }
-
     //funcion para asignar valor a quickbase
-    function setQuickBase($record_id){
-        $db = 'budxyyjmm';
+    function setQuickBase($record_id, $db){
         $url = "https://aortizdemontellanoarevalo.quickbase.com/db/".$db; //url a donde se consulta
         $userToken = "b8degy_fwjc_0_dkr9dvzbeqfv43cj89itthgskgd";
 
@@ -120,5 +72,49 @@ class Controller extends BaseController
         }
 
         return  false;
+    }
+
+    //funcion para obtener data de quickbase
+    function getQuickBase($db, $query, $clist){
+        $subdomain = 'aortizdemontellanoarevalo';
+        $userToken = 'b8degy_fwjc_0_dkr9dvzbeqfv43cj89itthgskgd';
+        $sortOrder = [["fieldId" => 3,"order" => "ASC"],];
+
+        $url = "https://api.quickbase.com/v1/records/query";
+     
+        $headers = [
+            "QB-Realm-Hostname: https://$subdomain.quickbase.com",
+            "User-Agent: {User-Agent}",
+            "Authorization: QB-USER-TOKEN $userToken",
+            "Content-Type: application/json"
+        ];
+     
+        $data = [
+            "from" => $db,
+            "select" => $clist,
+            "where" => $query,
+            "sortBy" => $sortOrder,
+            "options" => [
+                "skip" => 0,
+                "top" => 0,
+                "compareWithAppLocalTime" => false
+            ]
+        ];
+     
+        $ch = curl_init($url);
+     
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);          
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+     
+        $response = curl_exec($ch);
+     
+        if (curl_errno($ch)) {
+            return curl_error($ch);
+        } else {
+            return json_decode($response);
+        }
+        curl_close($ch);
     }
 }
