@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //crear excel con data de quickbase
-Route::get('/data-excel', 'Admin\ExcelController@generateExcel')->middleware(['api.token', 'throttle:create_csv']);
+Route::post('/data-excel', 'Admin\ExcelController@generateExcel')->middleware(['api.token', 'throttle:create_csv']);
 Route::get('/download-csv/{filename}', 'Admin\ExcelController@downloadCsv')->name('download.csv')
         ->middleware(['api.token', 'throttle:download_csv']);
