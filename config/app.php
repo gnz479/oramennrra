@@ -18,6 +18,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'api_token' => env('API_TOKEN', '641jkblj123*$"!'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

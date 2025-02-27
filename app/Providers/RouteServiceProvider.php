@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('create_csv', function ($request) {
-            return Limit::perHour(2)->by($request->ip());
+            return Limit::perHour(60)->by($request->ip());
         });
         RateLimiter::for('download_csv', function ($request) {
             return Limit::perHour(60)->by($request->ip());
