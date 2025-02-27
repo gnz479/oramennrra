@@ -12,6 +12,7 @@ class ExcelController extends Controller
     //funcion para generar archivos csv
     public function generateExcel()
     {   
+        ini_set('memory_limit', '512M');
         $db = ['budxpzx4g', 'budxp2nvi', 'budxp862p', 'budxt88sw', 'budxyyjmm', 'budxy5i8y'];
         $query = '';
         $clist = [];
@@ -70,6 +71,8 @@ class ExcelController extends Controller
 
     //funcion para descargar csv generados
     public function downloadCsv($filename){
+        ini_set('memory_limit', '512M');
+        
         $filePath = 'Excel/'.$filename.'.csv';
 
         if (!Storage::exists($filePath)) {
