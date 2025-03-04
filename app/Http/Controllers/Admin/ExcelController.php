@@ -22,28 +22,30 @@ class ExcelController extends Controller
             foreach($db as $db_item){
                 $data = $this->getQuickbase($db_item, $query, $clist);
                 $data_excel = [];
-                
+
                 if(count($data->data)){
+
+                    $headers = array_column(json_decode(json_encode($data->fields), true), 'label', 'id');
                     
-                    $headers = []; //cabecera columnas
-                    $body = []; 
-                    $con = 0; //contador para llenar la cabecera solo una vez
-                    foreach($data as $index => $item){
-                        $json = json_encode($item);
-                        $data_decode = json_decode($json, true); //convertimos a array
+                    // $headers = []; //cabecera columnas
+                    // $headers = array_map(function ($field) {
+                    //     return $field->label ?? $field->id;
+                    // }, $data->fields);
 
-                        $x = 0; 
-                        foreach($data_decode as $header => $decode){
-                            if($con == 0){
-                                $headers[] = $header;
-                                $x == (count($data_decode)-1) ? $con++:'';
-                            }
+                    $body = [];                    
+                    // Convertir datos en un formato plano
+                    foreach (array_chunk($data->data, 500) as $chunk) {
+                        $body = array_map(function ($item) {
+                            return array_map(function ($field) {
+                                if ($field instanceof stdClass) {
+                                    $field = (array) $field;
+                                }
 
-                            $body[$index][] = $decode;
-                            $x++;
-                        }
+                                return $field->value;
+                            }, (array) $item);
+                        }, $data->data);
                     }
-                    
+                                        
                     $csv = Writer::createFromString('');
                     $csv->insertOne($headers);
                     $csv->insertAll($body);
@@ -57,7 +59,7 @@ class ExcelController extends Controller
             
             return response()->json([
                 'status' => 'ok',
-                'urls_download' => $urls_download,
+                'urls_download' => $urls_download ?? '*',
             ]);
 
         } catch (\Exception $e) {

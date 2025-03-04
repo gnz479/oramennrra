@@ -21,6 +21,7 @@ class VerifyApiToken
 
         // Obtener el token de la solicitud (puede ser en un header o en un parámetro)
         $token = $request->header('Authorization') ?? $request->header('token'); //le damos opcion para poner el token en la url
+        // $token = $request->header('Authorization') ?? $request->query('token'); //le damos opcion para poner el token en la url
         $token = str_replace('Bearer ','', $request->header('Authorization') ?? $request->header('token'));
 
         // Verificar si el token es válido
