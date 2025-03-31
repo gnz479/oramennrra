@@ -80,7 +80,7 @@ class ExcelController extends Controller
         
         try {
             $url = "https://tciconsultoria.com/zelestra/dropletOramennrra.php";
-            $db = ['budxpzx4g', 'budxp2nvi', 'budxp862p', 'budxt88sw', 'budxyyjmm', 'budxy5i8y'];
+            $db = ['budxpzx4g','budxp862p','budxq7yuj','budxt88sw','budxyyjmm','budxy5i8y','budxzg6cz','budx7h949','bud2t7c8m','buqx9twu3','buq8cu39j','buv2xwba2'];
 
             $response = Http::get($url);
             
